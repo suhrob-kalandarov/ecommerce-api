@@ -20,7 +20,13 @@ import org.exp.ecommerce.api.models.base.BaseEntity;
 @Table(name = "ordered_items")
 public class OrderedItem extends BaseEntity {
 
+    private Integer quantity;
+    private Double price;
+    private Double totalPrice;
 
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

@@ -1,7 +1,7 @@
 package org.exp.ecommerce.api.models.commerce;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +21,6 @@ import java.util.List;
 @Table(name = "orders")
 public class Order extends BaseEntity {
 
-    @ManyToMany
+    @OneToMany
     private List<OrderedItem> orderedItems;
 }

@@ -1,6 +1,7 @@
 package org.exp.ecommerce.api.repositories;
 
 import org.exp.ecommerce.api.models.commerce.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,5 +15,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Product findByCategory_Id(Integer id);
 
-    List<Product> findAllByCategory_Id(Integer categoryId, Pageable pageable);
+    Page<Product> findAllByCategory_Id(Integer categoryId, Pageable pageable);
+
 }

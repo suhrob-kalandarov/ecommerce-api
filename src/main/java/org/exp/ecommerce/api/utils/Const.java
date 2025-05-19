@@ -2,7 +2,7 @@ package org.exp.ecommerce.api.utils;
 
 public interface Const {
 
-    String API = "api";
+    String API = "/api";
 
     String LOGIN = "login";
     String REGISTER = "register";
