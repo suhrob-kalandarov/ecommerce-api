@@ -29,7 +29,16 @@ public class OrderDTO {
         OrderDTO dto = new OrderDTO();
         dto.setId(order.getId());
         dto.setActive(order.is_active());
-        // Set other fields from your Order entity
+
+        // Map all fields from Order entity
+        dto.setCustomerName(order.getCustomerName());
+        dto.setCustomerEmail(order.getCustomerEmail());
+        dto.setShippingAddress(order.getShippingAddress());
+        dto.setSubtotal(order.getSubtotal());
+        dto.setShipping(order.getShipping());
+        dto.setTax(order.getTax());
+        dto.setTotal(order.getTotal());
+        dto.setStatus(order.getStatus());
 
         // Convert OrderedItems to DTOs
         if (orderedItems != null) {
@@ -37,39 +46,6 @@ public class OrderDTO {
                     .map(OrderedItemDTO::fromOrderedItem)
                     .collect(Collectors.toList()));
         }
-
-        return dto;
-    }
-}
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class OrderedItemDTO {
-    private Integer id;
-    private Integer productId;
-    private String productName;
-    private Double price;
-    private Integer quantity;
-    private Double totalPrice;
-    private String imageUrl;
-
-    public static OrderedItemDTO fromOrderedItem(OrderedItem item) {
-        OrderedItemDTO dto = new OrderedItemDTO();
-        dto.setId(item.getId());
-
-        if (item.getProduct() != null) {
-            dto.setProductId(item.getProduct().getId());
-            dto.setProductName(item.getProduct().getName());
-            // Set image URL if available
-            if (item.getProduct().getAttachment() != null) {
-                dto.setImageUrl("/api/attachments/" + item.getProduct().getAttachment().getId());
-            }
-        }
-
-        dto.setPrice(item.getPrice());
-        dto.setQuantity(item.getQuantity());
-        dto.setTotalPrice(item.getTotalPrice());
 
         return dto;
     }

@@ -7,6 +7,7 @@ import org.exp.ecommerce.api.service.CategoryService;
 import org.exp.ecommerce.api.utils.Const;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,14 +20,14 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    // GET ALL
+    // GET ALL - Accessible to all authenticated users
     @GetMapping
     public HttpEntity<?> getAll() {
         List<Category> all = categoryService.getAll();
         return ResponseEntity.ok(all);
     }
 
-    // GET BY ID
+    // GET BY ID - Accessible to all authenticated users
     @GetMapping("/{id}")
     public HttpEntity<?> getById(@PathVariable Integer id) {
         Optional<Category> category = categoryService.findById(id);
@@ -35,20 +36,18 @@ public class CategoryController {
                 .orElseGet(() -> ResponseEntity.notFound().build()); // 404
     }
 
-
-    /// /// /// /// /// /// /// ///
-
-
-    // CREATE
+    // CREATE - Only accessible to ADMIN
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public HttpEntity<?> create(@RequestBody Category category) {
         category.setId(null);
         Category saved = categoryService.saveReturn(category);
         return ResponseEntity.ok(saved);
     }
 
-    // FULL UPDATE
+    // FULL UPDATE - Only accessible to ADMIN
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public HttpEntity<?> update(@PathVariable Integer id, @RequestBody CategoryReq updatedCategory) {
         Optional<Category> optional = categoryService.findById(id);
         if (optional.isEmpty())
@@ -60,8 +59,9 @@ public class CategoryController {
         return ResponseEntity.ok(saved);
     }
 
-    // PARTIAL UPDATE - name
+    // PARTIAL UPDATE - Only accessible to ADMIN
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public HttpEntity<?> partialUpdate(@PathVariable Integer id, @RequestBody CategoryReq updatedCategory) {
         Optional<Category> optional = categoryService.findById(id);
         if (optional.isEmpty())
@@ -75,8 +75,9 @@ public class CategoryController {
         return ResponseEntity.ok(saved);
     }
 
-    // DELETE
+    // DELETE - Only accessible to ADMIN
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public HttpEntity<?> delete(@PathVariable Integer id) {
         if (!categoryService.existsById(id))
             return ResponseEntity.notFound().build();

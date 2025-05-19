@@ -66,16 +66,4 @@ public class OrderController {
         orderService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
-   /* @GetMapping
-    public ResponseEntity<List<Order>> getAll() {
-        return ResponseEntity.ok(orderService.getAll());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Order> getById(@PathVariable Integer id) {
-        Order order = orderService.getById(id);
-        return order != null ? ResponseEntity.ok(order) : ResponseEntity.notFound().build();
-    }*/
 }
-

@@ -1,0 +1,119 @@
+/* Custom styles for the e-commerce site */
+
+/* Global styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Card hover effect */
+.card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Product image styles */
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Price styling */
+.text-primary {
+    font-weight: 600;
+}
+
+/* Button hover effects */
+.btn {
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background-color: #4361ee;
+    border-color: #4361ee;
+}
+
+.btn-primary:hover {
+    background-color: #3a56d4;
+    border-color: #3a56d4;
+}
+
+.btn-outline-primary {
+    color: #4361ee;
+    border-color: #4361ee;
+}
+
+.btn-outline-primary:hover {
+    background-color: #4361ee;
+    border-color: #4361ee;
+}
+
+/* Navbar styling */
+.navbar-brand {
+    font-weight: 700;
+}
+
+.navbar-dark.bg-primary {
+    background-color: #4361ee !important;
+}
+
+/* Footer styling */
+footer {
+    margin-top: auto;
+}
+
+footer a {
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Form controls */
+.form-control:focus, .form-select:focus {
+    border-color: #4361ee;
+    box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+}
+
+/* Breadcrumb styling */
+.breadcrumb-item a {
+    color: #4361ee;
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+/* Table styling */
+.table-hover tbody tr:hover {
+    background-color: rgba(67, 97, 238, 0.05);
+}
+
+/* Badge styling */
+.badge.bg-primary {
+    background-color: #4361ee !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 160px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .navbar, .footer, .btn, .breadcrumb {
+        display: none !important;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+    }
+}

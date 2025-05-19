@@ -26,9 +26,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="products.html">Products</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="categories.html">Categories</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle active" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
                         Admin
@@ -347,8 +344,17 @@
     // Load categories
     async function loadCategories() {
         try {
+            // Get token from localStorage
+            const token = localStorage.getItem('token');
+
+            // Set authorization header
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+            // Get categories from API
             const response = await axios.get(`${API_URL}/categories`);
             categories = response.data;
+
+            console.log("Loaded categories:", categories);
 
             // Populate category filter
             const categoryFilter = document.getElementById('categoryFilter');
@@ -372,6 +378,7 @@
 
         } catch (error) {
             console.error('Error loading categories:', error);
+            alert('Failed to load categories. Please try again later.');
         }
     }
 
@@ -393,7 +400,13 @@
         }
 
         if (categoryId) {
-            filteredProducts = filteredProducts.filter(p => p.categoryId === parseInt(categoryId));
+            filteredProducts = filteredProducts.filter(p => {
+                // Check if product has category property and if it matches the selected category
+                if (p.category && p.category.id) {
+                    return p.category.id === parseInt(categoryId);
+                }
+                return false;
+            });
         }
 
         // Sort products
@@ -446,19 +459,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            ${currentPageProducts.map(product => `
+                            ${currentPageProducts.map(product => {
+            // Get image URL from attachment if available
+            let imageUrl = 'https://via.placeholder.com/50x50';
+            if (product.attachment && product.attachment.id) {
+                imageUrl = `${API_URL}/attachments/${product.attachment.id}`;
+            }
+
+            return `
                                 <tr>
                                     <td>${product.id}</td>
                                     <td>
-                                        <img src="${product.imageUrl || 'https://via.placeholder.com/50x50'}"
+                                        <img src="${imageUrl}"
                                              alt="${product.name}"
                                              class="img-thumbnail"
                                              style="width: 50px; height: 50px; object-fit: cover;">
                                     </td>
                                     <td>${product.name}</td>
-                                    <td>${getCategoryName(product.categoryId)}</td>
-                                    <td>$${product.price}</td>
-                                    <td>${product.stock || 'N/A'}</td>
+                                    <td>${getCategoryName(product.category ? product.category.id : null)}</td>
+                                    <td>$${product.price ? product.price.toFixed(2) : '0.00'}</td>
+                                    <td>${product.count || 0}</td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-secondary me-1" onclick="editProduct(${product.id})">
                                             <i class="bi bi-pencil"></i>
@@ -468,7 +488,7 @@
                                         </button>
                                     </td>
                                 </tr>
-                            `).join('')}
+                            `}).join('')}
                         </tbody>
                     </table>
                 </div>
@@ -480,6 +500,8 @@
 
     // Get category name by ID
     function getCategoryName(categoryId) {
+        if (!categoryId) return 'Uncategorized';
+
         const category = categories.find(c => c.id === categoryId);
         return category ? category.name : 'Unknown';
     }
@@ -539,14 +561,26 @@
                 return;
             }
 
+            // Create product object with the structure expected by the API
             const product = {
-                name,
-                categoryId,
-                price,
-                stock,
-                description,
-                imageUrl
+                name: name,
+                price: price,
+                count: stock,
+                category: {
+                    id: categoryId
+                },
+                _active: true
             };
+
+            // Add description if provided
+            if (description) {
+                product.description = description;
+            }
+
+            // Add image URL if provided (in a real app, you'd handle file uploads)
+            if (imageUrl) {
+                product.imageUrl = imageUrl;
+            }
 
             const response = await axios.post(`${API_URL}/products`, product);
 
@@ -576,11 +610,24 @@
         if (product) {
             document.getElementById('editProductId').value = product.id;
             document.getElementById('editProductName').value = product.name;
-            document.getElementById('editProductCategory').value = product.categoryId || '';
-            document.getElementById('editProductPrice').value = product.price;
-            document.getElementById('editProductStock').value = product.stock || '';
+
+            // Set category if available
+            if (product.category && product.category.id) {
+                document.getElementById('editProductCategory').value = product.category.id;
+            } else {
+                document.getElementById('editProductCategory').value = '';
+            }
+
+            document.getElementById('editProductPrice').value = product.price || '';
+            document.getElementById('editProductStock').value = product.count || '';
             document.getElementById('editProductDescription').value = product.description || '';
-            document.getElementById('editProductImage').value = product.imageUrl || '';
+
+            // Set image URL if available
+            if (product.attachment && product.attachment.id) {
+                document.getElementById('editProductImage').value = `${API_URL}/attachments/${product.attachment.id}`;
+            } else {
+                document.getElementById('editProductImage').value = '';
+            }
 
             // Show modal
             const modal = new bootstrap.Modal(document.getElementById('editProductModal'));
@@ -604,15 +651,27 @@
                 return;
             }
 
+            // Create product object with the structure expected by the API
             const product = {
-                id,
-                name,
-                categoryId,
-                price,
-                stock,
-                description,
-                imageUrl
+                id: id,
+                name: name,
+                price: price,
+                count: stock,
+                category: {
+                    id: categoryId
+                },
+                _active: true
             };
+
+            // Add description if provided
+            if (description) {
+                product.description = description;
+            }
+
+            // Add image URL if provided (in a real app, you'd handle file uploads)
+            if (imageUrl) {
+                product.imageUrl = imageUrl;
+            }
 
             const response = await axios.put(`${API_URL}/products/${id}`, product);
 

@@ -19,7 +19,7 @@ public class JwtService {
     private final UserRepository userRepository;
     
     public String generateToken(String email) {
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).get();
         return "Bearer " + Jwts.builder()
                 .subject(email)
                 .claim("user", user)
@@ -49,7 +49,7 @@ public class JwtService {
 
     public User getUserObject(String token) {
         String email = extractEmail(token);
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email).get();
     }
 
     public String extractEmail(String token) {

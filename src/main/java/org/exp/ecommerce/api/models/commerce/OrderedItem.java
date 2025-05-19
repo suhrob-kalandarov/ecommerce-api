@@ -1,5 +1,6 @@
 package org.exp.ecommerce.api.models.commerce;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -26,6 +27,7 @@ public class OrderedItem extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore // This breaks the circular reference
     private Order order;
 
     @ManyToOne

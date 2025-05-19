@@ -1,8 +1,10 @@
 package org.exp.ecommerce.api.controllers.commerce;
 
 import lombok.RequiredArgsConstructor;
+import org.exp.ecommerce.api.models.commerce.Order;
 import org.exp.ecommerce.api.models.commerce.OrderedItem;
 import org.exp.ecommerce.api.service.OrderItemService;
+import org.exp.ecommerce.api.service.OrderService;
 import org.exp.ecommerce.api.utils.Const;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
 public class OrderedItemController {
 
     private final OrderItemService service;
+    private final OrderService orderService;
 
     @GetMapping
     public ResponseEntity<?> getAll() {
@@ -35,7 +38,16 @@ public class OrderedItemController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody OrderedItem item) {
-        return ResponseEntity.ok(service.create(item));
+        if (item.getOrder() != null && item.getOrder().getId() != null) {
+            Order order = orderService.getById(item.getOrder().getId());
+            if (order != null) {
+                item.setOrder(order);
+                order.getOrderedItems().add(item);
+                OrderedItem savedItem = service.create(item);
+                return ResponseEntity.ok(savedItem);
+            }
+        }
+        return ResponseEntity.badRequest().body("Invalid order reference");
     }
 
     @PutMapping("/{id}")

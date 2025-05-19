@@ -22,6 +22,7 @@ import org.exp.ecommerce.api.models.base.BaseEntity;
 public class Product extends BaseEntity {
 
     private String name;
+    private String description;
     private Double price;
     private Integer count;
 

@@ -26,9 +26,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="products.html">Products</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="categories.html">Categories</a>
-                </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -149,23 +146,12 @@
             const itemsResponse = await axios.get(`${API_URL}/ordered-items/by-order/${orderId}`);
             const orderItems = itemsResponse.data;
 
-            // Get products for order items
-            const productPromises = orderItems.map(item => {
-                if (item.product && item.product.id) {
-                    return axios.get(`${API_URL}/products/${item.product.id}`);
-                }
-                return Promise.resolve({ data: null });
-            });
-
-            const productResponses = await Promise.all(productPromises);
-            const products = productResponses.map(response => response.data).filter(Boolean);
-
             // Update page title and breadcrumb
             document.title = `Order #${orderId} - E-commerce`;
             document.getElementById('orderBreadcrumb').textContent = `Order #${orderId}`;
 
             // Display order details
-            displayOrderDetails(order, orderItems, products);
+            displayOrderDetails(order, orderItems);
 
         } catch (error) {
             console.error('Error loading order details:', error);
@@ -178,7 +164,7 @@
     }
 
     // Display order details
-    function displayOrderDetails(order, orderItems, products) {
+    function displayOrderDetails(order, orderItems) {
         const container = document.getElementById('orderDetailContainer');
 
         // Format date
@@ -222,24 +208,27 @@
                                 </thead>
                                 <tbody>
                                     ${orderItems.map(item => {
-            const product = products.find(p => p && p.id === (item.product ? item.product.id : null)) || { name: 'Unknown Product' };
-            const imageUrl = product.attachment ? `/api/attachments/${product.attachment.id}` : 'https://via.placeholder.com/50x50';
+            const productName = item.product ? item.product.name : 'Unknown Product';
+            const productId = item.product ? item.product.id : 'N/A';
+            const imageUrl = item.product && item.product.attachment ?
+                `/api/attachments/${item.product.attachment.id}` :
+                'https://via.placeholder.com/50x50';
 
             return `
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <img src="${imageUrl}"
-                                                             alt="${product.name}"
+                                                             alt="${productName}"
                                                              class="img-thumbnail me-3"
                                                              style="width: 50px; height: 50px; object-fit: cover;">
                                                         <div>
-                                                            <h6 class="mb-0">${product.name}</h6>
-                                                            <small class="text-muted">ID: ${item.product ? item.product.id : 'N/A'}</small>
+                                                            <h6 class="mb-0">${productName}</h6>
+                                                            <small class="text-muted">ID: ${productId}</small>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>$${item.price || 0}</td>
+                                                <td>$${item.price ? item.price.toFixed(2) : '0.00'}</td>
                                                 <td>${item.quantity || 0}</td>
                                                 <td>$${item.totalPrice ? item.totalPrice.toFixed(2) : '0.00'}</td>
                                             </tr>
@@ -256,20 +245,20 @@
                                         <h5 class="card-title">Order Summary</h5>
                                         <div class="d-flex justify-content-between mb-2">
                                             <span>Subtotal:</span>
-                                            <span>$${order.subtotal?.toFixed(2) || '0.00'}</span>
+                                            <span>$${order.subtotal ? order.subtotal.toFixed(2) : '0.00'}</span>
                                         </div>
                                         <div class="d-flex justify-content-between mb-2">
                                             <span>Shipping:</span>
-                                            <span>$${order.shipping?.toFixed(2) || '0.00'}</span>
+                                            <span>$${order.shipping ? order.shipping.toFixed(2) : '0.00'}</span>
                                         </div>
                                         <div class="d-flex justify-content-between mb-2">
                                             <span>Tax:</span>
-                                            <span>$${order.tax?.toFixed(2) || '0.00'}</span>
+                                            <span>$${order.tax ? order.tax.toFixed(2) : '0.00'}</span>
                                         </div>
                                         <hr>
                                         <div class="d-flex justify-content-between">
                                             <strong>Total:</strong>
-                                            <strong class="text-primary">$${order.total?.toFixed(2) || '0.00'}</strong>
+                                            <strong class="text-primary">$${order.total ? order.total.toFixed(2) : '0.00'}</strong>
                                         </div>
                                     </div>
                                 </div>
