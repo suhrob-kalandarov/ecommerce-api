@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - E-commerce</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <i class="bi bi-shop me-2"></i>E-commerce
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="products.html">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="categories.html">Categories</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="cart.html">
+                        <i class="bi bi-cart3"></i> Cart <span id="cartCount" class="badge bg-danger">0</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown" id="userDropdown" style="display: none;">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> <span id="username">User</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                        <li><a class="dropdown-item" href="orders.html">My Orders</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item" id="loginBtn" style="display: none;">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Products Section -->
+<div class="container my-5">
+    <div class="row">
+        <!-- Sidebar with Categories -->
+        <div class="col-lg-3 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Categories</h5>
+                </div>
+                <div class="list-group list-group-flush" id="categoriesList">
+                    <a href="products.html" class="list-group-item list-group-item-action active">All Products</a>
+                    <!-- Categories will be loaded here -->
+                    <div class="text-center p-3">
+                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Filters</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Price Range</h6>
+                    <div class="d-flex mb-3">
+                        <input type="number" class="form-control me-2" id="minPrice" placeholder="Min">
+                        <input type="number" class="form-control" id="maxPrice" placeholder="Max">
+                    </div>
+                    <button class="btn btn-outline-primary w-100" id="applyFilters">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 id="productsTitle">All Products</h2>
+                <div class="d-flex">
+                    <div class="input-group me-2">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search products...">
+                        <button class="btn btn-outline-primary" id="searchBtn">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <select class="form-select" id="sortSelect" style="width: auto;">
+                        <option value="default">Sort by</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                        <option value="name-desc">Name: Z to A</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row g-4" id="productsContainer">
+                <!-- Products will be loaded here -->
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Product pagination" class="mt-4">
+                <ul class="pagination justify-content-center" id="pagination">
+                    <!-- Pagination will be generated here -->
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>E-commerce Shop</h5>
+                <p>Your one-stop shop for all your needs.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="index.html" class="text-white">Home</a></li>
+                    <li><a href="products.html" class="text-white">Products</a></li>
+                    <li><a href="categories.html" class="text-white">Categories</a></li>
+                    <li><a href="cart.html" class="text-white">Cart</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Contact Us</h5>
+                <address>
+                    <i class="bi bi-geo-alt"></i> 123 E-commerce St<br>
+                    <i class="bi bi-envelope"></i> <a href="mailto:info@ecommerce.com" class="text-white">info@ecommerce.com</a><br>
+                    <i class="bi bi-telephone"></i> +1 (123) 456-7890
+                </address>
+            </div>
+        </div>
+        <hr>
+        <div class="text-center">
+            <p>&copy; 2023 E-commerce. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    // Global variables
+    let allProducts = [];
+    let currentCategoryId = null;
+    let currentPage = 0;
+    let pageSize = 9;
+    let totalPages = 0;
+
+    // Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get('category');
+
+    if (categoryParam) {
+        currentCategoryId = parseInt(categoryParam);
+    }
+
+    // Load categories
+    async function loadCategories() {
+        try {
+            const response = await axios.get(`${API_URL}/categories`);
+            const categories = response.data;
+            const container = document.getElementById('categoriesList');
+
+            // Remove loading spinner
+            container.innerHTML = `<a href="products.html" class="list-group-item list-group-item-action ${!currentCategoryId ? 'active' : ''}">All Products</a>`;
+
+            categories.forEach(category => {
+                const isActive = currentCategoryId === category.id;
+                container.innerHTML += `
+                        <a href="products.html?category=${category.id}"
+                           class="list-group-item list-group-item-action ${isActive ? 'active' : ''}">
+                            ${category.name}
+                        </a>
+                    `;
+
+                // Update title if this is the active category
+                if (isActive) {
+                    document.getElementById('productsTitle').textContent = `${category.name} Products`;
+                }
+            });
+        } catch (error) {
+            console.error('Error loading categories:', error);
+            document.getElementById('categoriesList').innerHTML = `
+                    <a href="products.html" class="list-group-item list-group-item-action active">All Products</a>
+                    <div class="list-group-item text-danger">Failed to load categories</div>
+                `;
+        }
+    }
+
+    // Load products
+    async function loadProducts() {
+        try {
+            let url = `${API_URL}/products`;
+
+            if (currentCategoryId) {
+                url = `${API_URL}/products/by-category/${currentCategoryId}`;
+            }
+
+            const response = await axios.get(url);
+            allProducts = response.data;
+
+            // Apply any filters and sorting
+            filterAndDisplayProducts();
+        } catch (error) {
+            console.error('Error loading products:', error);
+            document.getElementById('productsContainer').innerHTML = `
+                    <div class="col-12 text-center text-danger">
+                        <p>Failed to load products. Please try again later.</p>
+                    </div>
+                `;
+        }
+    }
+
+    // Filter and display products
+    function filterAndDisplayProducts() {
+        const container = document.getElementById('productsContainer');
+        const minPrice = document.getElementById('minPrice').value;
+        const maxPrice = document.getElementById('maxPrice').value;
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const sortOption = document.getElementById('sortSelect').value;
+
+        // Filter products
+        let filteredProducts = [...allProducts];
+
+        if (minPrice) {
+            filteredProducts = filteredProducts.filter(p => p.price >= parseFloat(minPrice));
+        }
+
+        if (maxPrice) {
+            filteredProducts = filteredProducts.filter(p => p.price <= parseFloat(maxPrice));
+        }
+
+        if (searchTerm) {
+            filteredProducts = filteredProducts.filter(p =>
+                p.name.toLowerCase().includes(searchTerm) ||
+                (p.description && p.description.toLowerCase().includes(searchTerm))
+            );
+        }
+
+        // Sort products
+        switch (sortOption) {
+            case 'price-asc':
+                filteredProducts.sort((a, b) => a.price - b.price);
+                break;
+            case 'price-desc':
+                filteredProducts.sort((a, b) => b.price - a.price);
+                break;
+            case 'name-asc':
+                filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case 'name-desc':
+                filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
+                break;
+        }
+
+        // Calculate pagination
+        totalPages = Math.ceil(filteredProducts.length / pageSize);
+
+        // Get current page products
+        const startIndex = currentPage * pageSize;
+        const endIndex = startIndex + pageSize;
+        const currentPageProducts = filteredProducts.slice(startIndex, endIndex);
+
+        // Display products
+        if (currentPageProducts.length === 0) {
+            container.innerHTML = '<div class="col-12 text-center">No products found matching your criteria</div>';
+            document.getElementById('pagination').innerHTML = '';
+            return;
+        }
+
+        container.innerHTML = '';
+        currentPageProducts.forEach(product => {
+            container.innerHTML += `
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 shadow-sm">
+                            <img src="${product.imageUrl || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${product.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text text-truncate">${product.description || 'No description available'}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-primary fw-bold">$${product.price}</span>
+                                    <div>
+                                        <a href="product-detail.html?id=${product.id}" class="btn btn-sm btn-outline-secondary">View</a>
+                                        <button class="btn btn-sm btn-primary" onclick="addToCart(${product.id})">
+                                            <i class="bi bi-cart-plus"></i> Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+        });
+
+        // Update pagination
+        updatePagination();
+    }
+
+    // Update pagination controls
+    function updatePagination() {
+        const pagination = document.getElementById('pagination');
+
+        if (totalPages <= 1) {
+            pagination.innerHTML = '';
+            return;
+        }
+
+        let paginationHTML = `
+                <li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">Previous</a>
+                </li>
+            `;
+
+        for (let i = 0; i < totalPages; i++) {
+            paginationHTML += `
+                    <li class="page-item ${currentPage === i ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i + 1}</a>
+                    </li>
+                `;
+        }
+
+        paginationHTML += `
+                <li class="page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">Next</a>
+                </li>
+            `;
+
+        pagination.innerHTML = paginationHTML;
+    }
+
+    // Change page
+    function changePage(page) {
+        if (page < 0 || page >= totalPages) return;
+
+        currentPage = page;
+        filterAndDisplayProducts();
+
+        // Scroll to top of products
+        document.getElementById('productsTitle').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Add to cart function
+    function addToCart(productId) {
+        // Get existing cart from localStorage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Check if product already in cart
+        const existingItem = cart.find(item => item.productId === productId);
+
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                productId: productId,
+                quantity: 1
+            });
+        }
+
+        // Save updated cart
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Update cart count
+        updateCartCount();
+
+        // Show toast notification
+        alert('Product added to cart!');
+    }
+
+    // Update cart count
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const count = cart.reduce((total, item) => total + item.quantity, 0);
+        document.getElementById('cartCount').textContent = count;
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCategories();
+        loadProducts();
+        updateCartCount();
+
+        // Event listeners
+        document.getElementById('applyFilters').addEventListener('click', function() {
+            currentPage = 0;
+            filterAndDisplayProducts();
+        });
+
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            currentPage = 0;
+            filterAndDisplayProducts();
+        });
+
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                currentPage = 0;
+                filterAndDisplayProducts();
+            }
+        });
+
+        document.getElementById('sortSelect').addEventListener('change', function() {
+            currentPage = 0;
+            filterAndDisplayProducts();
+        });
+    });
+</script>
+</body>
+</html>

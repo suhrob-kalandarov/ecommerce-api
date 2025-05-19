@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - E-commerce</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <i class="bi bi-shop me-2"></i>E-commerce
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="products.html">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="categories.html">Categories</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="cart.html">
+            <i class="bi bi-cart3"></i> Cart <span id="cartCount" class="badge bg-danger">0</span>
+          </a>
+        </li>
+        <li class="nav-item dropdown" id="userDropdown" style="display: none;">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i> <span id="username">User</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+            <li><a class="dropdown-item" href="orders.html">My Orders</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+          </ul>
+        </li>
+        <li class="nav-item" id="loginBtn" style="display: none;">
+          <a class="nav-link" href="login.html">Login</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Breadcrumb -->
+<div class="container mt-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+      <li class="breadcrumb-item"><a href="cart.html">Cart</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+    </ol>
+  </nav>
+</div>
+
+<!-- Checkout Content -->
+<div class="container my-5">
+  <h2 class="mb-4">Checkout</h2>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <!-- Shipping Information -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Shipping Information</h5>
+        </div>
+        <div class="card-body">
+          <form id="shippingForm">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" required>
+              </div>
+              <div class="col-md-6">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="tel" class="form-control" id="phone" required>
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <input type="text" class="form-control" id="address" required>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" id="city" required>
+              </div>
+              <div class="col-md-3">
+                <label for="state" class="form-label">State</label>
+                <input type="text" class="form-control" id="state" required>
+              </div>
+              <div class="col-md-3">
+                <label for="zip" class="form-label">Zip Code</label>
+                <input type="text" class="form-control" id="zip" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="country" class="form-label">Country</label>
+              <select class="form-select" id="country" required>
+                <option value="">Select Country</option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="UK">United Kingdom</option>
+                <option value="AU">Australia</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+              </select>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Payment Information -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Payment Information</h5>
+        </div>
+        <div class="card-body">
+          <form id="paymentForm">
+            <div class="mb-3">
+              <label class="form-label">Payment Method</label>
+              <div class="d-flex gap-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" value="creditCard" checked>
+                  <label class="form-check-label" for="creditCard">
+                    Credit Card
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="paymentMethod" id="paypal" value="paypal">
+                  <label class="form-check-label" for="paypal">
+                    PayPal
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div id="creditCardForm">
+              <div class="mb-3">
+                <label for="cardName" class="form-label">Name on Card</label>
+                <input type="text" class="form-control" id="cardName" required>
+              </div>
+              <div class="mb-3">
+                <label for="cardNumber" class="form-label">Card Number</label>
+                <input type="text" class="form-control" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" required>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="expiryDate" class="form-label">Expiry Date</label>
+                  <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="cvv" class="form-label">CVV</label>
+                  <input type="text" class="form-control" id="cvv" placeholder="XXX" required>
+                </div>
+              </div>
+            </div>
+
+            <div id="paypalForm" style="display: none;">
+              <div class="alert alert-info">
+                You will be redirected to PayPal to complete your payment after placing the order.
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <!-- Order Summary -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Order Summary</h5>
+        </div>
+        <div class="card-body">
+          <div id="orderSummary">
+            <div class="text-center py-3">
+              <div class="spinner-border spinner-border-sm text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2 mb-0">Loading order summary...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Place Order Button -->
+      <button class="btn btn-primary btn-lg w-100 mb-3" id="placeOrderBtn">
+        <i class="bi bi-check-circle me-2"></i>Place Order
+      </button>
+
+      <a href="cart.html" class="btn btn-outline-secondary w-100">
+        <i class="bi bi-arrow-left me-2"></i>Back to Cart
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-4 mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>E-commerce Shop</h5>
+        <p>Your one-stop shop for all your needs.</p>
+      </div>
+      <div class="col-md-4">
+        <h5>Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="index.html" class="text-white">Home</a></li>
+          <li><a href="products.html" class="text-white">Products</a></li>
+          <li><a href="categories.html" class="text-white">Categories</a></li>
+          <li><a href="cart.html" class="text-white">Cart</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5>Contact Us</h5>
+        <address>
+          <i class="bi bi-geo-alt"></i> 123 E-commerce St<br>
+          <i class="bi bi-envelope"></i> <a href="mailto:info@ecommerce.com" class="text-white">info@ecommerce.com</a><br>
+          <i class="bi bi-telephone"></i> +1 (123) 456-7890
+        </address>
+      </div>
+    </div>
+    <hr>
+    <div class="text-center">
+      <p>&copy; 2023 E-commerce. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // Global variables
+  let cartItems = [];
+  let products = [];
+
+  // Load order summary
+  async function loadOrderSummary() {
+    try {
+      // Get cart from localStorage
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      if (cart.length === 0) {
+        window.location.href = 'cart.html';
+        return;
+      }
+
+      // Get all products to find details for cart items
+      const response = await axios.get(`${API_URL}/products`);
+      products = response.data;
+
+      // Map cart items to products
+      cartItems = cart.map(item => {
+        const product = products.find(p => p.id === item.productId);
+        return {
+          ...item,
+          product: product || { name: 'Unknown Product', price: 0 }
+        };
+      });
+
+      displayOrderSummary();
+    } catch (error) {
+      console.error('Error loading order summary:', error);
+      document.getElementById('orderSummary').innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        Failed to load order summary. Please try again later.
+                    </div>
+                `;
+    }
+  }
+
+  // Display order summary
+  function displayOrderSummary() {
+    const container = document.getElementById('orderSummary');
+
+    // Calculate totals
+    const subtotal = cartItems.reduce((total, item) => {
+      return total + (item.product.price * item.quantity);
+    }, 0);
+
+    const shipping = 10;
+    const tax = subtotal * 0.1; // 10% tax
+    const total = subtotal + shipping + tax;
+
+    container.innerHTML = `
+                <ul class="list-group list-group-flush mb-3">
+                    ${cartItems.map(item => `
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <div>
+                                <h6 class="mb-0">${item.product.name}</h6>
+                                <small class="text-muted">Qty: ${item.quantity}</small>
+                            </div>
+                            <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+
+                <hr>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotal:</span>
+                    <span>$${subtotal.toFixed(2)}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Shipping:</span>
+                    <span>$${shipping.toFixed(2)}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Tax (10%):</span>
+                    <span>$${tax.toFixed(2)}</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between mb-0">
+                    <strong>Total:</strong>
+                    <strong class="text-primary">$${total.toFixed(2)}</strong>
+                </div>
+            `;
+  }
+
+  // Toggle payment method forms
+  function togglePaymentForms() {
+    const creditCardForm = document.getElementById('creditCardForm');
+    const paypalForm = document.getElementById('paypalForm');
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+    if (paymentMethod === 'creditCard') {
+      creditCardForm.style.display = 'block';
+      paypalForm.style.display = 'none';
+    } else {
+      creditCardForm.style.display = 'none';
+      paypalForm.style.display = 'block';
+    }
+  }
+
+  // Place order
+  async function placeOrder() {
+    try {
+      // Validate forms
+      const shippingForm = document.getElementById('shippingForm');
+      const paymentForm = document.getElementById('paymentForm');
+
+      if (!shippingForm.checkValidity()) {
+        shippingForm.reportValidity();
+        return;
+      }
+
+      if (!paymentForm.checkValidity()) {
+        paymentForm.reportValidity();
+        return;
+      }
+
+      // Get form data
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const email = document.getElementById('email').value;
+      const address = document.getElementById('address').value;
+      const city = document.getElementById('city').value;
+      const state = document.getElementById('state').value;
+      const zip = document.getElementById('zip').value;
+      const country = document.getElementById('country').value;
+
+      // Get cart items
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      // Calculate totals
+      const subtotal = cartItems.reduce((total, item) => {
+        return total + (item.product.price * item.quantity);
+      }, 0);
+
+      const shipping = 10;
+      const tax = subtotal * 0.1;
+      const total = subtotal + shipping + tax;
+
+      // Create order object
+      const order = {
+        _active: true,
+        customerName: `${firstName} ${lastName}`,
+        customerEmail: email,
+        shippingAddress: `${address}, ${city}, ${state} ${zip}, ${country}`,
+        subtotal: subtotal,
+        shipping: shipping,
+        tax: tax,
+        total: total,
+        status: 'PENDING'
+      };
+
+      // Submit order to API
+      const orderResponse = await axios.post(`${API_URL}/orders`, order);
+      const createdOrder = orderResponse.data;
+
+      // Create ordered items
+      for (const item of cart) {
+        const product = products.find(p => p.id === item.productId);
+        if (!product) continue;
+
+        const orderedItem = {
+          _active: true,
+          order: { id: createdOrder.id },
+          product: { id: product.id },
+          quantity: item.quantity,
+          price: product.price,
+          totalPrice: product.price * item.quantity
+        };
+
+        await axios.post(`${API_URL}/ordered-items`, orderedItem);
+      }
+
+      // Clear cart
+      localStorage.removeItem('cart');
+
+      // Store order ID for confirmation page
+      localStorage.setItem('lastOrderId', createdOrder.id);
+
+      // Redirect to confirmation page
+      window.location.href = 'order-confirmation.html';
+
+    } catch (error) {
+      console.error('Error placing order:', error);
+      alert('Failed to place order. Please try again later.');
+    }
+  }
+
+  // Update cart count
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
+    document.getElementById('cartCount').textContent = count;
+  }
+
+  // Initialize page
+  document.addEventListener('DOMContentLoaded', function() {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    if (!isLoggedIn) {
+      window.location.href = 'login.html?redirect=checkout';
+      return;
+    }
+
+    loadOrderSummary();
+    updateCartCount();
+
+    // Add event listeners
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+      radio.addEventListener('change', togglePaymentForms);
+    });
+
+    document.getElementById('placeOrderBtn').addEventListener('click', placeOrder);
+  });
+</script>
+</body>
+</html>
